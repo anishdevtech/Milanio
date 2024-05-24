@@ -1,6 +1,6 @@
 /** @format */
 
-const { Calculator } = require("@m3rcena/weky/dist/index.cjs");
+const  {Calculator}  = require("@m3rcena/weky/dist/index.cjs");
 const {
 	ChatInputCommandInteraction,
 	SlashCommandBuilder,
@@ -16,16 +16,9 @@ module.exports = {
 	 * @param {ChatInputCommandInteraction} interaction
 	 */
 	run: async (client, interaction) => {
-		interaction.reply("Enter Random text to start.");
-		const Collector = interaction.channel
-			.createMessageCollector({
-				filter: (msg) => msg.author.id === interaction.user.id,
-				max: 1,
-				time: 5 * 60 * 1000, // 5 minutes
-			})
-			.on("collect", async (message) => {
+
 				await Calculator({
-					message: message,
+					input: interaction,
 					embed: {
 						title: "calculator",
 						color: client.config.c,
@@ -36,6 +29,5 @@ module.exports = {
 					invalidQuery: "You provided query is invalid‼️",
 					othersMessage: "Only <@{{author}}> can use the buttons!",
 				});
-			});
-	},
-};
+			}
+	};

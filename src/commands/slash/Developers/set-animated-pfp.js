@@ -9,7 +9,7 @@ const ExtendedClient = require("../../../class/ExtendedClient");
 
 module.exports = {
     structure: new SlashCommandBuilder()
-        .setName("set-animated-pfp")
+        .setName("setanimatedpfp")
         .setDescription("Change the bot\'s profile picture to an animated one.")
         .addAttachmentOption((option) =>
             option
