@@ -1,7 +1,7 @@
 
 const { Message, PermissionFlagBits } = require('discord.js');
 const ExtendedClient = require('../../../class/ExtendedClient');
-const {Calculator} = require('@m3rcena/weky/dist/index.cjs');
+const {Calculator} = require('@m3rcena/weky');
 module.exports = {
     structure: {
         name: 'calculator',

@@ -1,50 +1,62 @@
-const { readdirSync } = require('fs');
-const { log } = require('../functions');
-const ExtendedClient = require('../class/ExtendedClient');
-
+const { readdirSync } = require("fs");
+const path = require("path");
+const ExtendedClient = require("../class/ExtendedClient");
+const {log} = require("../functions.js")
 /**
- * 
- * @param {ExtendedClient} client 
+ *
+ * @param {ExtendedClient} client
  */
-module.exports = (client) => {
-    for (const type of readdirSync('./src/commands/')) {
-        for (const dir of readdirSync('./src/commands/' + type)) {
-            for (const file of readdirSync('./src/commands/' + type + '/' + dir).filter((f) => f.endsWith('js') || f.endsWith(".cjs"))) {
-                const module = require('../commands/' + type + '/' + dir + '/' + file);
+module.exports = client => {
+    const categories = readdirSync("./src/commands/");
 
-                if (!module) continue;
+    categories.forEach(category => {
+        const commandDirs = readdirSync(`./src/commands/${category}`);
+        commandDirs.forEach(dir => {
+            const commandFiles = readdirSync(
+                `./src/commands/${category}/${dir}`
+            ).filter(file => file.endsWith(".js"));
+            const subcommands = [];
 
-                if (type === 'prefix') {
-                    if (!module.structure?.name || !module.run) {
-                        log('Unable to load the command ' + file +' due to missing \'structure#name\' or/and \'run\' properties.', 'warn');
-        
-                        continue;
-                    };
+            commandFiles.forEach(file => {
+                const command = require(
+                    path.join(
+                        __dirname,
+                        `../commands/${category}/${dir}/${file}`
+                    )
+                );
+                if (!command.structure?.name || !command.run) {
+                    console.log(
+                        `Unable to load the command ${file} due to missing 'structure#name' or/and 'run' properties.`
+                    );
+                    return;
+                }
 
-                    client.collection.prefixcommands.set(module.structure.name, module);
-                    client.collection.prefixCat.set(module.structure.name,dir);
-                    
+            log(`Loading __${command.structure.name}__ from __${dir}__ category.`,"info")
+                subcommands.push(command.structure);
+             //  console.log(command)
+                client.collection.interactioncommands.set(
+                    command.structure.name,
+                    command
+                );
+            });
+const processDescription = ({ description }) => ({ description: description ? description.trim() === '' ? 'No description found' : description : 'No description found' });
 
-                    if (module.structure.aliases && Array.isArray(module.structure.aliases)) {
-                        module.structure.aliases.forEach((alias) => {
-                            client.collection.aliases.set(alias, module.structure.name);
-                        });
-                    };
-                } else {
-                    if (!module.structure?.name || !module.run) {
-                        log('Unable to load the command ' + file +' due to missing \'structure#name\' or/and \'run\' properties.', 'warn');
-        
-                        continue;
-                    };
 
-                    client.collection.interactioncommands.set(module.structure.name, module);
-                    client.applicationcommandsArray.push(module.structure);
-                    client.collection.slashCat.set(module.structure.name,dir);
-                    
-                };
+            client.applicationcommandsArray.push({
+                name: dir.toLowerCase(),
+                description: `${dir} commands`,
+                options: subcommands.map(sub => ({
+                    type: 1, // 1 for subcommand
+                    name: sub.name,
+                    ...processDescription(sub), // Using object spread to merge the properties
+                    options: sub.options || []
+                }))
+            });
+            
 
-                log('Loaded new command: ' + file, 'info');
-            };
-        };
-    };
+           // console.log(...client.applicationcommandsArray);
+            client.collection.slashCat.set(dir, category);
+        });
+    });
 };
+
