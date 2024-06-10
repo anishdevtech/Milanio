@@ -33,7 +33,7 @@ module.exports = client => {
 
             log(`Loading __${command.structure.name}__ from __${dir}__ category.`,"info")
                 subcommands.push(command.structure);
-             //   console.log(command)
+             //  console.log(command)
                 client.collection.interactioncommands.set(
                     command.structure.name,
                     command
@@ -54,7 +54,7 @@ const processDescription = ({ description }) => ({ description: description ? de
             });
             
 
-          //  console.log(...client.applicationcommandsArray);
+           // console.log(...client.applicationcommandsArray);
             client.collection.slashCat.set(dir, category);
         });
     });

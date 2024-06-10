@@ -1,7 +1,7 @@
 
 const { Message, PermissionFlagBits } = require('discord.js');
 const ExtendedClient = require('../../../class/ExtendedClient');
-const {ChaosWords} = require('@m3rcena/weky/dist/index.cjs');
+const {ChaosWords} = require('@m3rcena/weky');
 module.exports = {
     structure: {
         name: 'ChaosWord',

@@ -10,14 +10,18 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@m3rcena/weky": "^6.4.0",
+    "@m3rcena/weky": "^6.5.0",
+    "axios": "^1.7.2",
     "chalk": "^2.4.2",
     "discord-gamecord": "^4.4.2",
     "discord.js": "^14.14.1",
     "dotenv": "^16.4.5",
+    "get-image-colors": "^4.0.1",
+    "lavalink-client": "^2.1.7",
     "mongoose": "^8.2.1",
+    "node-fetch": "^3.3.2",
     "translate-google": "^1.5.0",
-    "ws": "^8.16.0"
+    "ws": "^8.17.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.0"
